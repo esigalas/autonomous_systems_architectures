@@ -131,6 +131,10 @@ class RobotPerception:
         # Update the robot path. This is a python list. Since we use the path
         # only for updating the coverage, try not to add duplicates
         # Each point should be in the form of [x,y] (theta does not concern us)
+        position = (self.robot_pose['x'],self.robot_pose['y'])
+        
+        if position not in self.robot_trajectory:
+            self.robot_trajectory.append(position)
         
         # ---------------------------------------------------------------------
 
@@ -199,8 +203,32 @@ class RobotPerception:
         # PS. Try to make it fast :)
         # PS2. Do not have coverage values on obstacles or unknown space!
         # If done correctly, the coverage will appear purple in rviz
+    
+        area_size = 1 / self.resolution
+        for path_coordinates in self.robot_trajectory:
+            robot_pose_x_px = int(path_coordinates[0]/ self.resolution)
+            robot_pose_y_px = int(path_coordinates[1]/ self.resolution)
+            [posx,posy] =  [\
+                            robot_pose_x_px - \
+                                self.origin['x']   / self.resolution,\
+                            robot_pose_y_px - \
+                                self.origin['y'] / self.resolution\
+                                ]
+            print posx,posy
 
+            x_min_size = int(posx)-int(area_size)
+            x_max_size = int(posx)+int(area_size)
+            y_min_size = int(posy)-int(area_size)
+            y_max_size = int(posy)+int(area_size)
+            mask1 = self.ogm[x_min_size:x_max_size,y_min_size:y_max_size] <50
+            mask2 = self.ogm[x_min_size:x_max_size,y_min_size:y_max_size] >=0
+            mask = mask2+mask1
+            print mask 
+            self.coverage[ x_min_size:x_max_size,y_min_size:y_max_size] = numpy.where(mask,100,0)
+
+          
         # ---------------------------------------------------------------------
+
         # Publishing coverage ogm to see it in rviz
         coverage_ogm = OccupancyGrid()
         coverage_ogm.header.frame_id = "map"

@@ -79,7 +79,7 @@ class Navigation:
             ry - self.subtargets[self.next_subtarget][1])
 
         # Check if distance is less than 7 px (14 cm)
-        if dist < 7:
+        if dist < 10:
           print "Sub target reached!"
           self.next_subtarget += 1
 
@@ -228,6 +228,76 @@ class Navigation:
         # robot_perception and the next_subtarget [x,y]. From these, you can 
         # compute the robot velocities for the vehicle to approach the target.
         # Hint: Trigonometry is required
+
+        #if we have a target
+        if self.inner_target_exists: 
+            #get robot x,y coordinates in pixels
+            [rx, ry] = [\
+                        self.robot_perception.robot_pose['x_px'] - \
+                                self.robot_perception.origin['x'] / self.robot_perception.resolution,\
+                        self.robot_perception.robot_pose['y_px'] - \
+                                self.robot_perception.origin['y'] / self.robot_perception.resolution\
+                                ]
+            # print [rx,ry]
+            dist = math.hypot(\
+                rx - self.subtargets[self.next_subtarget][0], \
+                ry - self.subtargets[self.next_subtarget][1])
+
+            # print "dist : ",dist
+            
+
+            #apply trigonometry to calculate the angle between robot and target
+            adjacent = rx - self.subtargets[self.next_subtarget][0]
+            opposite = ry - self.subtargets[self.next_subtarget][1]
+            param  = abs(adjacent)/abs(opposite)
+            degrees = math.atan(param)*180/math.pi
+
+            robot_angle = self.robot_perception.robot_pose['th']*180/math.pi
+            
+            #convert robot angle to 0-360 system
+            if robot_angle <0:
+                robot_angle = robot_angle +360
+            
+            #convet relative degrees of robot and target to an angle in 0-360 system
+            if(rx<=self.subtargets[self.next_subtarget][0]) and (ry>=self.subtargets[self.next_subtarget][1]):
+                angle  = degrees+270 
+                # print "4th"
+            if(rx<=self.subtargets[self.next_subtarget][0]) and (ry<=self.subtargets[self.next_subtarget][1]):
+                angle = 90-degrees
+                # print "1st"
+            if(rx>=self.subtargets[self.next_subtarget][0]) and (ry<=self.subtargets[self.next_subtarget][1]):
+                angle = degrees +90
+                # print "2nd"
+            if(rx>=self.subtargets[self.next_subtarget][0]) and (ry>=self.subtargets[self.next_subtarget][1]):
+                angle = (90-degrees)+180
+                # print "3rd"
+
+            # print "robot angle : ",robot_angle
+            # print "angle : ", angle
+
+            if abs(angle - robot_angle) >180:
+                angular = robot_angle-angle
+                #scaling angular velocity
+                angular = angular/1440
+
+            else:
+                angular = angle - robot_angle
+                #scaling angular velocity
+                angular = angular/360
+
+            if abs(angle - robot_angle) >20:
+                linear = 0
+            else:
+                #convert pixels to milimeters
+                linear = dist*0.002
+
+            #keep a minimum angular vel
+            if angular<0.05 and angular>=0:
+                angular = 0.05
+            if angular>-0.05 and angular<0:
+                angular = -0.05
+
+            return [linear, angular]
 
         # ---------------------------------------------------------------------
 

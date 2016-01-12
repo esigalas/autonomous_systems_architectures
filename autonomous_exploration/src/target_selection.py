@@ -26,7 +26,31 @@ class TargetSelection:
         while not found:
           x_rand = random.randint(0, ogm.shape[0] - 1)
           y_rand = random.randint(0, ogm.shape[1] - 1)
-          if ogm[x_rand][y_rand] < 50:
+          # x_rand = 260
+          # y_rand = 290
+          # x_rand = 300
+          # y_rand = 250
+          # x_rand = 275
+          # y_rand = 240
+          
+          #case 4
+          # x_rand = 241
+          # y_rand = 230
+
+          #case 2
+          # x_rand = 260
+          # y_rand = 275
+          # y_rand = 300
+
+          #case 1
+          # x_rand = 270
+          # y_rand = 240
+
+          #case 3
+          # x_rand = 241
+          # y_rand = 265
+
+          if ogm[x_rand][y_rand] < 50 and coverage[x_rand][y_rand] != 100:
             next_target = [x_rand, y_rand]
             found = True
         
