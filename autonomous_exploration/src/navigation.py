@@ -79,7 +79,7 @@ class Navigation:
             ry - self.subtargets[self.next_subtarget][1])
 
         # Check if distance is less than 7 px (14 cm)
-        if dist < 10:
+        if dist < 7:
           print "Sub target reached!"
           self.next_subtarget += 1
 
