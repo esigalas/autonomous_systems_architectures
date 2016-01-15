@@ -202,40 +202,45 @@ class RobotController:
       # Combine the speeds following the subsumption architecture
       # YOUR CODE HERE ------------------------------------------------------
       #challenge_3
-      # if front > 2 or front < 0.15:
-      # # if front > 2 or front < 0.15 and r_left > 1.5 and r_right > 1.5:
-      #   self.linear_velocity = l_laser 
-      # else:
-      #   self.linear_velocity = l_sonar
 
-      # if (left > 2 or left < 0.15 )and (right >2 or right < 0.15):
-      #   self.angular_velocity = a_laser
-      # else:
-      #   self.angular_velocity = a_sonar
+      #if front sonar is too low or too high make linear velocity laser velocity,
+      #else make linear velocity sonar velocity
+      if front > 2 or front < 0.15:
+      # if front > 2 or front < 0.15 and r_left > 1.5 and r_right > 1.5:
+        self.linear_velocity = l_laser 
+      else:
+        self.linear_velocity = l_sonar
+
+      #if left and right sonars are too low or too high  make angular velocity laser velocity
+      #else make angular velocity sonar velocity
+      if (left > 2 or left < 0.15 )and (right >2 or right < 0.15):
+        self.angular_velocity = a_laser
+      else:
+        self.angular_velocity = a_sonar
 
       # ---------------------------------------------------------------------
       #Challenge_8
-      if front > 2 or front < 0.15:
-        if l_goal ==0:
-          self.linear_velocity  = l_goal
-        else:
-          self.linear_velocity = l_laser*.6 
+      # if front > 2 or front < 0.15:
+      #   if l_goal ==0:
+      #     self.linear_velocity  = l_goal
+      #   else:
+      #     self.linear_velocity = l_laser*.6 
       
-      else:
-        if l_goal ==0:
-          self.linear_velocity  = l_goal
-        else:
-          self.linear_velocity = l_sonar*.6
+      # else:
+      #   if l_goal ==0:
+      #     self.linear_velocity  = l_goal
+      #   else:
+      #     self.linear_velocity = l_sonar*.6
 
-      c = (left+right)/2*3
+      # c = (left+right)/2*3
 
-      if (left > 2 or left < 0.15 )and (right >2 or right < 0.15):
+      # if (left > 2 or left < 0.15 )and (right >2 or right < 0.15):
         
-        self.angular_velocity = (a_laser/c + a_goal*c )*.5
+      #   self.angular_velocity = (a_laser/c + a_goal*c )*.5
 
-      else:
+      # else:
         
-        self.angular_velocity = (a_sonar/c + a_goal*c)*.5
+      #   self.angular_velocity = (a_sonar/c + a_goal*c)*.5
 
     # Combines the speeds into one output using a motor schema approach
     def produceSpeedsMotorSchema(self):
@@ -267,8 +272,8 @@ class RobotController:
       [l_goal, a_goal] = self.navigation.velocitiesToNextSubtarget()
 
       #challenge_2
-      self.linear_velocity  = l_laser
-      self.angular_velocity = a_laser
+      # self.linear_velocity  = l_laser
+      # self.angular_velocity = a_laser
       #challenge_1
       # self.linear_velocity  = l_sonar
       # self.angular_velocity = a_sonar
@@ -280,8 +285,8 @@ class RobotController:
       # Get the speeds using the motor schema approach
       # YOUR CODE HERE ------------------------------------------------------
       #challenge_4
-      # self.linear_velocity  = l_laser*0.3 + l_sonar*0.7
-      # self.angular_velocity = a_laser*0.6 + a_sonar*0.4
+      self.linear_velocity  = l_laser*0.3 + l_sonar*0.7
+      self.angular_velocity = a_laser*0.6 + a_sonar*0.4
       
       # ---------------------------------------------------------------------
       #challenge_7
