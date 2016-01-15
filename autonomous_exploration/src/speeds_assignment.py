@@ -267,11 +267,11 @@ class RobotController:
       [l_goal, a_goal] = self.navigation.velocitiesToNextSubtarget()
 
       #challenge_2
-      # self.linear_velocity  = l_laser
-      # self.angular_velocity = a_laser
+      self.linear_velocity  = l_laser
+      self.angular_velocity = a_laser
       #challenge_1
-      self.linear_velocity  = l_sonar
-      self.angular_velocity = a_sonar
+      # self.linear_velocity  = l_sonar
+      # self.angular_velocity = a_sonar
 
 
       # print "a laser : ",a_laser
