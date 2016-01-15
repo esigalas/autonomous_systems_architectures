@@ -78,8 +78,17 @@ class Navigation:
             rx - self.subtargets[self.next_subtarget][0], \
             ry - self.subtargets[self.next_subtarget][1])
 
+        if self.next_subtarget < len(self.subtargets)-1:
+            dist2 = math.hypot(\
+                rx - self.subtargets[self.next_subtarget+1][0], \
+                ry - self.subtargets[self.next_subtarget+1][1])
+
+            if dist2<dist:
+                dist = dist2
+                self.next_subtarget += 1
+
         # Check if distance is less than 7 px (14 cm)
-        if dist < 10:
+        if dist < 7:
           print "Sub target reached!"
           self.next_subtarget += 1
 
