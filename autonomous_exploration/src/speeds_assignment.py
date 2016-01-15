@@ -269,6 +269,7 @@ class RobotController:
       #challenge_2
       # self.linear_velocity  = l_laser
       # self.angular_velocity = a_laser
+      
       #challenge_1
       self.linear_velocity  = l_sonar
       self.angular_velocity = a_sonar
