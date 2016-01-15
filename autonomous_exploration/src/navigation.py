@@ -31,6 +31,7 @@ class Navigation:
 
         # Container for the current path
         self.path = []
+
         # Container for the subgoals in the path
         self.subtargets = []
 
@@ -78,8 +79,17 @@ class Navigation:
             rx - self.subtargets[self.next_subtarget][0], \
             ry - self.subtargets[self.next_subtarget][1])
 
-        # Check if distance is less than 7 px (14 cm)
-        if dist < 10:
+       # dist2 = math.hypot(\
+       #      rx - self.subtargets[self.next_subtarget+1][0], \
+       #      ry - self.subtargets[self.next_subtarget+1][1])
+
+        #if distance to next subtarget is less than the distance to current subtarget change subtarget
+        # if (dist2<dist):
+        #     self.next_subtarget += 1
+        #     dist = dist2
+
+        # Check if distance is lself.subtargetsess than 7 px (14 cm)
+        if dist < 7 :
           print "Sub target reached!"
           self.next_subtarget += 1
 
