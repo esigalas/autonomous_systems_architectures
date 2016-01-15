@@ -285,8 +285,8 @@ class RobotController:
       # Get the speeds using the motor schema approach
       # YOUR CODE HERE ------------------------------------------------------
       #challenge_4
-      # self.linear_velocity  = l_laser*0.3 + l_sonar*0.7
-      # self.angular_velocity = a_laser*0.6 + a_sonar*0.4
+      self.linear_velocity  = l_laser*0.3 + l_sonar*0.7
+      self.angular_velocity = a_laser*0.6 + a_sonar*0.4
       
       # ---------------------------------------------------------------------
       #challenge_7
@@ -307,20 +307,20 @@ class RobotController:
       # ---------------------------------------------------------------------
 
       #challenge_9
-      if l_goal == 0:
-        self.linear_velocity  = l_laser*0.1 + l_sonar*0.1
-      else:
-        self.linear_velocity  = l_laser*0.4 + l_sonar*0.3
+      # if l_goal == 0:
+      #   self.linear_velocity  = l_laser*0.1 + l_sonar*0.1
+      # else:
+      #   self.linear_velocity  = l_laser*0.4 + l_sonar*0.3
       
-      c = (left+right)/2*3
-      self.angular_velocity = ( a_goal*(c/2) + (a_laser*0.6 +a_sonar*0.4)/c ) *.5
-      # self.angular_velocity = a_goal*( (front+left+right+r_right+r_left)/(5*3) ) + (a_laser*0.6 +a_sonar*0.4)/ ( (front+left+right+r_right+r_left)/(5*3) )
+      # c = (left+right)/2*3
+      # self.angular_velocity = ( a_goal*(c/2) + (a_laser*0.6 +a_sonar*0.4)/c ) *.5
+      # # self.angular_velocity = a_goal*( (front+left+right+r_right+r_left)/(5*3) ) + (a_laser*0.6 +a_sonar*0.4)/ ( (front+left+right+r_right+r_left)/(5*3) )
 
-      # self.angular_velocity = a_goal
-      if self.angular_velocity < 0.05 and self.angular_velocity>=0: 
-        self.angular_velocity = 0.05
-      if self.angular_velocity > -0.05 and self.angular_velocity<0: 
-        self.angular_velocity = -0.05 
+      # # self.angular_velocity = a_goal
+      # if self.angular_velocity < 0.05 and self.angular_velocity>=0: 
+      #   self.angular_velocity = 0.05
+      # if self.angular_velocity > -0.05 and self.angular_velocity<0: 
+      #   self.angular_velocity = -0.05 
       # ---------------------------------------------------------------------
 
       # print "linear : ", self.linear_velocity
