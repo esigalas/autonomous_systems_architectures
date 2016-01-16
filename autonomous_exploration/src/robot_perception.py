@@ -215,7 +215,8 @@ class RobotPerception:
                                 self.origin['y'] / self.resolution\
                                 ]
             print posx,posy
-
+            # print self.origin['x'],self.origin['y']
+            
             x_min_size = int(posx)-int(area_size)
             x_max_size = int(posx)+int(area_size)
             y_min_size = int(posy)-int(area_size)

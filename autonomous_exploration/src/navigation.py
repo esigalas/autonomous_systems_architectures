@@ -154,7 +154,8 @@ class Navigation:
         target = self.target_selection.selectTarget(\
             local_ogm,\
             local_coverage,\
-            self.robot_perception.robot_pose)
+            self.robot_perception.robot_pose,\
+            self.robot_perception.origin)
         print "Navigation: New target: " + str(target)
 
         # Once the target has been found, find the path to it
@@ -247,7 +248,7 @@ class Navigation:
                         self.robot_perception.robot_pose['y_px'] - \
                                 self.robot_perception.origin['y'] / self.robot_perception.resolution\
                                 ]
-            # print [rx,ry]
+            print "rx,ry",[rx,ry]
             dist = math.hypot(\
                 rx - self.subtargets[self.next_subtarget][0], \
                 ry - self.subtargets[self.next_subtarget][1])
@@ -287,14 +288,14 @@ class Navigation:
             if abs(angle - robot_angle) >180:
                 angular = robot_angle-angle
                 #scaling angular velocity
-                angular = angular/1440
+                angular = angular/360
 
             else:
                 angular = angle - robot_angle
                 #scaling angular velocity
                 angular = angular/360
 
-            if abs(angle - robot_angle) >20:
+            if abs(angle - robot_angle) >90:
                 linear = 0
             else:
                 #convert pixels to milimeters

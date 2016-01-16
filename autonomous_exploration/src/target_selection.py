@@ -2,7 +2,7 @@
 
 import rospy
 import random
-
+import numpy 
 # Class for selecting the next best target
 class TargetSelection:
 
@@ -10,7 +10,7 @@ class TargetSelection:
     def __init__(self):
         pass
 
-    def selectTarget(self, ogm, coverage, robot_pose):
+    def selectTarget(self, ogm, coverage, robot_pose, origin):
         
         # The next target in pixels
         next_target = [0, 0] 
@@ -48,6 +48,26 @@ class TargetSelection:
           #case 3
           # x_rand = 241
           # y_rand = 265
+          # for (x,y) in numpy.ndenumerate(ogm):
+          #   print x,y
+          # robot_pose_x_px = int(robot_pose['x']/ 0.2)
+          # robot_pose_y_px = int(robot_pose['y']/ 0.2)
+          # [posx,posy] =  [\
+          #                   robot_pose_x_px - \
+          #                       (-12.5)  / 0.2,\
+          #                   robot_pose_y_px - \
+          #                       (-12.5) / 0.2\
+          #                       ]
+          # print robot_pose['x_px']/ 0.2, robot_pose['y_px']/ 0.2
+          # print robot_pose['x'], robot_pose['y']
+
+          [posx,posy] =  [\
+                            robot_pose['x_px'] - \
+                                origin['x']   / 0.2,\
+                            robot_pose['y_px'] - \
+                                origin['y'] / 0.2\
+                        ]
+          print "posx,posy :",posx,posy
 
           if ogm[x_rand][y_rand] < 50 and coverage[x_rand][y_rand] != 100:
             next_target = [x_rand, y_rand]

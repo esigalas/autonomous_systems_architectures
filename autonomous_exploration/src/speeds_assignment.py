@@ -308,22 +308,36 @@ class RobotController:
 
       #challenge_9
       if l_goal == 0:
-        self.linear_velocity  = l_laser*0.1 + l_sonar*0.1
+        self.linear_velocity  = 0#l_laser*0.1 + l_sonar*0.1
       else:
         self.linear_velocity  = l_laser*0.4 + l_sonar*0.3
       
-      c = (left+right)/2*3
+      c = (left+right)/3*3
       
       #vesrion1
       self.angular_velocity = ( a_goal*(c/2) + (a_laser*0.6 +a_sonar*0.4)/c ) *.5
       #version2
       # self.angular_velocity = a_goal*(c) + (a_laser*0.6 +a_sonar*0.4)*(1-c) 
 
+      #version3
+      # self.angular_velocity = a_goal/(1+math.exp(a_laser*0.6 +a_sonar*0.4))
+      
+
+      #version4
+      # c = (left+right+front)/3*3
+      # self.angular_velocity = ( a_goal*c*(1/(1+math.exp(a_laser*0.6 +a_sonar*0.4))) + (a_laser*0.6 +a_sonar*0.4)*(1-c) ) *.5
+
+
       # self.angular_velocity = a_goal
       if self.angular_velocity < 0.05 and self.angular_velocity>=0: 
         self.angular_velocity = 0.05
       if self.angular_velocity > -0.05 and self.angular_velocity<0: 
         self.angular_velocity = -0.05 
+
+      # if self.angular_velocity > .7:
+      #   self.angular_velocity = .7
+      # elif self.angular_velocity < -.7:
+      #   self.angular_velocity = -.7
       # ---------------------------------------------------------------------
 
       # print "linear : ", self.linear_velocity
