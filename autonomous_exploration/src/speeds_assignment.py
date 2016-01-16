@@ -205,43 +205,52 @@ class RobotController:
 
       #if front sonar is too low or too high make linear velocity laser velocity,
       #else make linear velocity sonar velocity
-      if front > 2 or front < 0.15:
-      # if front > 2 or front < 0.15 and r_left > 1.5 and r_right > 1.5:
-        self.linear_velocity = l_laser 
-      else:
-        self.linear_velocity = l_sonar
+      # if front > 2 or front < 0.15:
+      # # if front > 2 or front < 0.15 and r_left > 1.5 and r_right > 1.5:
+      #   self.linear_velocity = l_laser 
+      # else:
+      #   self.linear_velocity = l_sonar
 
-      #if left and right sonars are too low or too high  make angular velocity laser velocity
-      #else make angular velocity sonar velocity
-      if (left > 2 or left < 0.15 )and (right >2 or right < 0.15):
-        self.angular_velocity = a_laser
-      else:
-        self.angular_velocity = a_sonar
+      # #if left and right sonars are too low or too high  make angular velocity laser velocity
+      # #else make angular velocity sonar velocity
+      # if (left > 2 or left < 0.15 )and (right >2 or right < 0.15):
+      #   self.angular_velocity = a_laser
+      # else:
+      #   self.angular_velocity = a_sonar
 
       # ---------------------------------------------------------------------
       #Challenge_8
-      # if front > 2 or front < 0.15:
-      #   if l_goal ==0:
-      #     self.linear_velocity  = l_goal
-      #   else:
-      #     self.linear_velocity = l_laser*.6 
+      if front > 2 or front < 0.15:
+        if l_goal ==0:
+          self.linear_velocity  = l_goal
+        else:
+          self.linear_velocity = l_laser*.6 
       
-      # else:
-      #   if l_goal ==0:
-      #     self.linear_velocity  = l_goal
-      #   else:
-      #     self.linear_velocity = l_sonar*.6
+      else:
+        if l_goal ==0:
+          self.linear_velocity  = l_goal
+        else:
+          self.linear_velocity = l_sonar*.6
 
-      # c = (left+right)/2*3
 
-      # if (left > 2 or left < 0.15 )and (right >2 or right < 0.15):
+      c = (left+right)/2*3
+      if (left > 2 or left < 0.15 )and (right >2 or right < 0.15):
         
-      #   self.angular_velocity = (a_laser/c + a_goal*c )*.5
+        # self.angular_velocity = (a_laser/c + a_goal*c )*.5
+        self.angular_velocity = (a_laser*(1-c) + a_goal*c )*.5
+      else:
+        # self.angular_velocity = (a_sonar/c + a_goal*c)*.5
+        self.angular_velocity = (a_sonar*(1-c) + a_goal*c )*.5
 
-      # else:
-        
-      #   self.angular_velocity = (a_sonar/c + a_goal*c)*.5
+      if self.angular_velocity < 0.05 and self.angular_velocity>=0: 
+        self.angular_velocity = 0.05
+      if self.angular_velocity > -0.05 and self.angular_velocity<0: 
+        self.angular_velocity = -0.05 
 
+      if self.angular_velocity > .7:
+        self.angular_velocity = .7
+      elif self.angular_velocity < -.7:
+        self.angular_velocity = -.7
     # Combines the speeds into one output using a motor schema approach
     def produceSpeedsMotorSchema(self):
  
@@ -290,8 +299,8 @@ class RobotController:
       
       # ---------------------------------------------------------------------
       #challenge_7
-      # self.linear_velocity  = l_goal
-      # self.angular_velocity = a_goal
+      self.linear_velocity  = l_goal
+      self.angular_velocity = a_goal
       # ---------------------------------------------------------------------
 
 
@@ -307,32 +316,47 @@ class RobotController:
       # ---------------------------------------------------------------------
 
       #challenge_9
-      if l_goal == 0:
-        self.linear_velocity  = 0#l_laser*0.1 + l_sonar*0.1
-      else:
-        self.linear_velocity  = l_laser*0.4 + l_sonar*0.3
+      # if l_goal == 0:
+      #   self.linear_velocity  = l_laser*0.15 + l_sonar*0.15
+      # else:
+      #   self.linear_velocity  = l_laser*0.3 + l_sonar*0.3
       
-      c = (left+right)/3*3
+      # c = (left+right)/3*3
       
+      # print "c:", c
       #vesrion1
-      self.angular_velocity = ( a_goal*(c/2) + (a_laser*0.6 +a_sonar*0.4)/c ) *.5
+      # self.angular_velocity = ( a_goal*(c/2) + (a_laser*0.6 +a_sonar*0.4)/c ) *.5
       #version2
-      # self.angular_velocity = a_goal*(c) + (a_laser*0.6 +a_sonar*0.4)*(1-c) 
+      # c = (left+front)/6 if right>left else (right+front)/6
+      # self.angular_velocity = (a_goal*(c) + (a_laser*0.6 +a_sonar*0.4)*(1-c)/2 )*.5
 
       #version3
-      # self.angular_velocity = a_goal/(1+math.exp(a_laser*0.6 +a_sonar*0.4))
+      # c = (left+front)/6 if right>left else (right+front)/6
+      # self.angular_velocity = (a_goal*(c) + (a_laser*0.6 +a_sonar*0.4)*(1-c)/2 )/(1+math.exp(a_laser*0.6 +a_sonar*0.4))
       
 
       #version4
       # c = (left+right+front)/3*3
-      # self.angular_velocity = ( a_goal*c*(1/(1+math.exp(a_laser*0.6 +a_sonar*0.4))) + (a_laser*0.6 +a_sonar*0.4)*(1-c) ) *.5
+      # c = (left+front)/6 if right>left else (right+front)/6
+
+      # obstacle_avoid_angular = a_laser*0.6 +a_sonar*0.4
+      # self.angular_velocity = ( a_goal*(1/(1+math.exp(obstacle_avoid_angular))) + (a_laser*0.6 +a_sonar*0.4)/(1+math.exp(a_goal)) )
 
 
-      # self.angular_velocity = a_goal
-      if self.angular_velocity < 0.05 and self.angular_velocity>=0: 
-        self.angular_velocity = 0.05
-      if self.angular_velocity > -0.05 and self.angular_velocity<0: 
-        self.angular_velocity = -0.05 
+      # #version5
+      # c = front
+      # obstacle_avoid_angular = a_laser*0.2 +a_sonar*0.3
+
+      # if math.copysign(1,a_goal) != math.copysign(1,obstacle_avoid_angular):
+      #   obstacle_avoid_angular = -obstacle_avoid_angular
+      
+      # self.angular_velocity = (a_goal *front + (obstacle_avoid_angular/front) ) / 10#*math.copysign(1,a_goal)
+
+      # # self.angular_velocity = a_goal
+      # if self.angular_velocity < 0.05 and self.angular_velocity>=0: 
+      #   self.angular_velocity = 0.05
+      # if self.angular_velocity > -0.05 and self.angular_velocity<0: 
+      #   self.angular_velocity = -0.05 
 
       # if self.angular_velocity > .7:
       #   self.angular_velocity = .7
