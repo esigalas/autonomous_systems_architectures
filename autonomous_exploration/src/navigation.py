@@ -248,6 +248,7 @@ class Navigation:
                         self.robot_perception.robot_pose['y_px'] - \
                                 self.robot_perception.origin['y'] / self.robot_perception.resolution\
                                 ]
+
             print "rx,ry",[rx,ry]
             dist = math.hypot(\
                 rx - self.subtargets[self.next_subtarget][0], \
@@ -288,14 +289,14 @@ class Navigation:
             if abs(angle - robot_angle) >180:
                 angular = robot_angle-angle
                 #scaling angular velocity
-                angular = angular/360
+                angular = angular/1440
 
             else:
                 angular = angle - robot_angle
                 #scaling angular velocity
                 angular = angular/360
 
-            if abs(angle - robot_angle) >90:
+            if abs(angle - robot_angle) >60:
                 linear = 0
             else:
                 #convert pixels to milimeters
@@ -306,6 +307,9 @@ class Navigation:
                 angular = 0.05
             if angular>-0.05 and angular<0:
                 angular = -0.05
+
+            if linear < 0.06:
+                linear = 0.06
 
             return [linear, angular]
 
