@@ -94,6 +94,8 @@ class RobotController:
 
       #calculate linear velocity according to front sonar and rear sonars values
       linear =  (front ) / (r_left+r_right)
+      # linear =  (front - (r_left+r_right) ) / (r_left+r_right)     
+
 
       #theshold robot linear velocity to a maximum
       if linear > .7:
@@ -246,7 +248,7 @@ class RobotController:
       # c = (left+front/2) if right>left else (right+front)
      
 
-      c = min([left+front/2,right+front/2,])
+      c = min([left+front/2,right+front/2])
 
       if front > 2 or front < 0.15:
         self.linear_velocity  = (l_goal*math.exp(c) + l_laser*0.3/(1+math.exp(c)) )*.5
@@ -380,10 +382,10 @@ class RobotController:
       # c = (left+front/2) if right>left else (right+front)
 
       # c = min([left,right,front])
-      c = min([left+front/2,right+front/2,])
+      c = min([left+front/2,right+front/2])
 
-      self.linear_velocity  = (l_goal*math.exp(c) + (l_laser*0.4+ l_sonar*0.4)/(1+math.exp(c)) )*.5
-      self.angular_velocity = ( a_goal*c + (a_laser*0.6 +a_sonar*0.4)/c )*.5
+      self.linear_velocity  = (l_goal*math.exp(c) + (l_laser*0.4+ l_sonar*0.7)/(1+math.exp(c)) )*.5
+      self.angular_velocity = ( a_goal*c + (a_laser*0.2 +a_sonar*0.7)/c )*.5
 
       # if math.copysign(1,a_goal) != math.copysign(1,obstacle_avoid_angular):
       #   obstacle_avoid_angular = -obstacle_avoid_angular
