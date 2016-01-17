@@ -249,7 +249,7 @@ class Navigation:
                                 self.robot_perception.origin['y'] / self.robot_perception.resolution\
                                 ]
 
-            print "rx,ry",[rx,ry]
+            # print "rx,ry",[rx,ry]
             dist = math.hypot(\
                 rx - self.subtargets[self.next_subtarget][0], \
                 ry - self.subtargets[self.next_subtarget][1])

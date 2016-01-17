@@ -224,7 +224,7 @@ class RobotPerception:
             mask1 = self.ogm[x_min_size:x_max_size,y_min_size:y_max_size] <50
             mask2 = self.ogm[x_min_size:x_max_size,y_min_size:y_max_size] >=0
             mask = mask2+mask1
-            print mask 
+            # print mask 
             self.coverage[ x_min_size:x_max_size,y_min_size:y_max_size] = numpy.where(mask,100,0)
 
           
