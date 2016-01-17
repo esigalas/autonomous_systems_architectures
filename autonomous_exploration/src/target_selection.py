@@ -23,55 +23,34 @@ class TargetSelection:
         # Of course you should try something smarter...!
         found = False
         while not found:
-          x_rand = random.randint(0, ogm.shape[0] - 1)
-          y_rand = random.randint(0, ogm.shape[1] - 1)
-          # x_rand = 260
-          # y_rand = 290
-          # x_rand = 300
-          # y_rand = 250
-          # x_rand = 275
-          # y_rand = 240
+          # x_rand = random.randint(0, ogm.shape[0] - 1)
+          # y_rand = random.randint(0, ogm.shape[1] - 1)
+          # print "pos:", robot_pose[0],robot_pose[1]
           
-          #case 4
-          # x_rand = 241
-          # y_rand = 230
+          distances = []
+          indexes = []
+          #check all the rows and cols of ogm
+          for (i,j), value in numpy.ndenumerate(ogm):
+            # print "coverage:",i,j,val
+            #if the value in ogm is free and if there is not covered space nearby in a specific range
+            if value < 50 and -1 not in ogm[i-50:i+50,j-50:j+50] and 100 not in coverage[i-25:i+25,j-25:j+25]:
+            # if value < 50 and 100 not in coverage[i-25:i+25,j-25:j+25]:            
+              #calculate the distance from the row and column from current position
+              a = numpy.array((robot_pose[0],robot_pose[1]))
+              b = numpy.array((i,j))
+              #keep distances and indexes of row and column in two lists
+              distances.append(numpy.linalg.norm(a-b))
+              index = (i,j)
+              indexes.append(index)
+          #find the index of the minimum distance and set them as next target
 
-          #case 2
-          # x_rand = 260
-          # y_rand = 275
-          # y_rand = 300
-
-          #case 1
-          # x_rand = 270
-          # y_rand = 240
-
-          #case 3
-          # x_rand = 241
-          # y_rand = 265
-          # for (x,y) in numpy.ndenumerate(ogm):
-          #   print x,y
-          # robot_pose_x_px = int(robot_pose['x']/ 0.2)
-          # robot_pose_y_px = int(robot_pose['y']/ 0.2)
-          # [posx,posy] =  [\
-          #                   robot_pose_x_px - \
-          #                       (-12.5)  / 0.2,\
-          #                   robot_pose_y_px - \
-          #                       (-12.5) / 0.2\
-          #                       ]
-          # print robot_pose['x_px']/ 0.2, robot_pose['y_px']/ 0.2
-          # print robot_pose['x'], robot_pose['y']
-
-          [posx,posy] =  [\
-                            robot_pose['x_px'] - \
-                                origin['x']   / 0.2,\
-                            robot_pose['y_px'] - \
-                                origin['y'] / 0.2\
-                        ]
-          print "posx,posy :",posx,posy
-
-          if ogm[x_rand][y_rand] < 50 and coverage[x_rand][y_rand] != 100:
-            next_target = [x_rand, y_rand]
-            found = True
+          min_index = distances.index(min(distances))
+          next_target = indexes[min_index]
+          found = True
+          # print "indexes:",indexes[min_index]
+          # if ogm[x_rand][y_rand] < 50 and coverage[x_rand][y_rand] != 100:
+          #   next_target = [x_rand, y_rand]
+          #   found = True
         
         # ---------------------------------------------------------------------
 

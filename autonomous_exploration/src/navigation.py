@@ -151,10 +151,14 @@ class Navigation:
         print "Got the map and Coverage"
   
         # Call the target selection function to select the next best goal
+        g_robot_pose0 = self.robot_perception.getGlobalCoordinates(\
+            [self.robot_perception.robot_pose['x_px'],\
+            self.robot_perception.robot_pose['y_px']])
+
         target = self.target_selection.selectTarget(\
             local_ogm,\
             local_coverage,\
-            self.robot_perception.robot_pose,\
+            g_robot_pose0,\
             self.robot_perception.origin)
         print "Navigation: New target: " + str(target)
 
